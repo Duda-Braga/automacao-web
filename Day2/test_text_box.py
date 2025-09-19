@@ -29,7 +29,8 @@ def test_fill_text_box_form_and_validate(driver):
     permanent_address_input.send_keys(permanent_address)
 
     # Click on submit button
-    # driver.execute_script("arguments[0].scrollIntoView(true);", submit_button)
+    #da scrolll na pagina ate achar o submit button
+    driver.execute_script("arguments[0].scrollIntoView(true);", submit_button)
     submit_button.click()
 
     time.sleep(5)
