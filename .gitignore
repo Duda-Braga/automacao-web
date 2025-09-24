@@ -1,3 +1,9 @@
 myproject/
 requirements.txt
 .DS_Store
+allure-results/
+screenshots/
+reports/
+test_durations.log
+dashboard.html
+report.html
