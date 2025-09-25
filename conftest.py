@@ -8,6 +8,7 @@ import os, pytest_html
 
 @pytest.fixture #notacao do pytest
 def driver():
+    """ Inicializa e retorna uma instancia do Selenium Web Driver"""
     # Setup: initialize the WebDriver
     driver_instance = webdriver.Chrome()
     yield driver_instance #executa ate aq faz uma pausa e retrona pra qm chamou ele, conceitou do pyytest
@@ -36,6 +37,7 @@ def pytest_runtest_setup(item):
 
 @pytest.hookimpl(trylast=True)
 def pytest_runtest_teardown(item):
+    """Mostra o tempo de duracao do teste e salva e arquivo html"""
     duration = time.time() - item.start_time
     msg = f"[END] Test '{item.nodeid}' finished in {duration:.2f} seconds."
     print(msg)
@@ -44,8 +46,10 @@ def pytest_runtest_teardown(item):
     with LOG_FILE.open("a", encoding="utf-8") as f:
         f.write(msg + "\n")
 
+#docstype tem que ser dentro da funcao
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
+    """ Funcao para tirar print do erro e botar no html"""
     outcome = yield
     report = outcome.get_result()
     extra = getattr(report, "extra", [])

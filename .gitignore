@@ -7,3 +7,5 @@ reports/
 test_durations.log
 dashboard.html
 report.html
+.coverage
+htmlcov/
