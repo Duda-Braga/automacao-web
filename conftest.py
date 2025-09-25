@@ -18,10 +18,11 @@ def driver():
 # vai gerar na raiz do projeto um test duration
 LOG_FILE = Path("test_durations.log")
 
-@pytest.fixture #notacao do pytest
-def test_data(): #feature para carregar o json
-    with open("data/test_data.json") as f:
-        return json.load(f)
+#apaaga test data, o tool tips q tava chamando ele vai falhar
+# @pytest.fixture #notacao do pytest
+# def test_data(): #feature para carregar o json
+#     with open("data/test_data.json") as f:
+#         return json.load(f)
     
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_setup(item):
