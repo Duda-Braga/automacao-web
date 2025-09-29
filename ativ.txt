@@ -1,0 +1,17 @@
+1- Criar o meu caso de teste manual
+2- criar page object model (POM)
+3- Criar o novo script de automacao
+    -navegar para o home page demoqa (nao vai direto para alert)
+    -Clicar no menu alert
+    -interagir com botoes
+    -validarcada alert
+--> o alert eh um pedaco de codigo em html q ele nao eh rendierixado. Criar um web dirver wait e usar ec (condicoes esperadas) e colcoar esperar um alerta
+
+1 page objetcs
+1 novo teste 
+4 metodos, um para cada alert
+
+1. entrar no demoqa
+2. clicar em "alerts, frame & windows"
+3. clicar em "alerts"
+4. fazer um teste para cada botao
