@@ -9,3 +9,4 @@ report.html
 .coverage
 htmlcov/
 test_report.csv
+.png

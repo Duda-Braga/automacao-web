@@ -1,6 +1,9 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
+import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class PracticeFormPage:
     def __init__(self, driver):
@@ -20,6 +23,9 @@ class PracticeFormPage:
         self.city_dropdown = (By.ID, "city")
         self.submit_button = (By.ID, "submit")
         self.out_put_modal = (By.ID, "example-modal-sizes-title-lg")
+
+        self.subjects_input = (By.ID, "subjectsInput")
+        self.subjects_text = (By.ID, "react-select-2-option-0") # novo locator para o click do subject
     
     def navigate(self):
         self.driver.get(self.url)
@@ -42,7 +48,10 @@ class PracticeFormPage:
         self.driver.execute_script("arguments[0].scrollIntoView(true);", subjects_field)
         for subject in data["subjects"]:
             subjects_field.send_keys(subject)
-            subjects_field.send_keys(Keys.ENTER)
+            subjects_text = self.wait.until(
+                EC.element_to_be_clickable(self.subjects_text)
+        )
+        subjects_text.click()
 
         # Hobbies
         for hobby in data["hobbies"]:
@@ -63,13 +72,17 @@ class PracticeFormPage:
         self.driver.execute_script("arguments[0].scrollIntoView(true);", city_dropdown)
         self.driver.find_element(*self.city_dropdown).click()
         self.driver.find_element(By.XPATH, f"//*[text()='{data['city']}']").click()
+        time.sleep(2)
 
 
     def submit_form(self):
         #cria. variavel button pra virar web element
         button= self.driver.find_element(*self.submit_button)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
+        time.sleep(2)
         self.driver.find_element(*self.submit_button).click()
+        
+        
 
     def check_modal_visible(self):
         out_put_modal = self.driver.find_element(*self.out_put_modal)
