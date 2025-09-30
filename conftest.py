@@ -6,30 +6,32 @@ from pathlib import Path
 import time 
 import os, pytest_html
 import csv
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 report_data = []
 
-# def pytest_addoption(parser):
-#     parser.addoption("--browser", action="store", default="chrome", help="browser to execute tests (chrome or firefox)")
+def pytest_addoption(parser):
+     parser.addoption("--browser", action="store", default="chrome", help="browser to execute tests (chrome or firefox)")
 
 # pra rodar o mesmo teste em diferentes browsers
 # @pytest.fixture
-@pytest.fixture(params=["chrome", "firefox"], scope="function")
-def driver(request):
-    # browser = request.config.getoption("--browser").lower()
-    browser = request.param
-    if browser == "chrome":
-        driver_instance = webdriver.Chrome()
-    elif browser == "firefox":
-        driver_instance = webdriver.Firefox()
-    else:
-        raise ValueError(f"Browser '{browser}' is not supported.")
+# @pytest.fixture(params=["chrome", "firefox"], scope="function")
+# def driver(request):
+#     # browser = request.config.getoption("--browser").lower()
+#     browser = request.param
+#     if browser == "chrome":
+#         driver_instance = webdriver.Chrome()
+#     elif browser == "firefox":
+#         driver_instance = webdriver.Firefox()
+#     else:
+#         raise ValueError(f"Browser '{browser}' is not supported.")
     
-    driver_instance.maximize_window()
-    request.node.browser = browser
+#     driver_instance.maximize_window()
+#     request.node.browser = browser
 
-    yield driver_instance
-    driver_instance.quit()
+#     yield driver_instance
+#     driver_instance.quit()
 
 # vai gerar na raiz do projeto um test duration
 LOG_FILE = Path("test_durations.log")
@@ -156,3 +158,25 @@ def session_resource():
     print("\n[SETUP] session_resource")
     yield "session fixture"
     print("[TEARDOWN] session_resource")
+
+def pytest_generate_tests(metafunc):
+    if "browser" in metafunc.fixturenames:
+        browser = metafunc.config.getoption("browser").split(",")
+        metafunc.parametrize("browser", browser)
+        
+@pytest.fixture(params=["chrome", "firefox"], scope="function")
+def driver(browser):
+    if browser == "chrome":
+        options = ChromeOptions()
+    elif browser == "firefox":
+        options = FirefoxOptions()
+    else:
+        raise ValueError(f"Browser not supported: {browser}")
+
+    driver = webdriver.Remote(
+        command_executor="http://localhost:4444/wd/hub",
+        options=options,
+    )
+
+    yield driver
+    driver.quit()
