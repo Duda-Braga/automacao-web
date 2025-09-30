@@ -1,4 +1,56 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+class AlertPage:
+    def __init__(self, driver):
+        self.driver = driver
+        self.url = "https://demoqa.com/"
+        self.menu_alert_frame_window = (By.XPATH, "//*[text()='Alerts, Frame & Windows']")
+        self.menu_alert = (By.XPATH, "//span[text()='Alerts']")
+        self.simple_alert_button = (By.ID,"alertButton")
+        self.time_alert_button = (By.ID, "timerAlertButton")
+        
+        self.wait = WebDriverWait(self.driver, 10)
+
+    def navigate(self):
+        self.driver.get(self.url)
+
+    def access_menu_alert_frame_window(self):
+        self.driver.find_element(*self.menu_alert_frame_window).click()
+    
+    def access_menu_alert(self):
+        menu_left = self.wait.until(EC.visibility_of_element_located(self.menu_alert))
+        menu_left.click()
+
+    def click_simple_alert_button(self):
+        self.driver.find_element(*self.simple_alert_button).click()
+
+    def click_time_alert_button(self):
+        self.driver.find_element(*self.time_alert_button).click()
+
+    def check_simple_alert_text(self):
+        simple_alert = self.wait.until(EC.alert_is_present())
+        return simple_alert.text
+    
+    def accept_alert(self):
+        simple_alert = self.wait.until(EC.alert_is_present())
+        return simple_alert.accept
+    
+
+
+
+
+
+
+
+
+
+
+
+'''
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -60,7 +112,5 @@ class Alert:
 
 
 
+'''
 
-#####3
-
-de 
